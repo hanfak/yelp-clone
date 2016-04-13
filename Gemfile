@@ -29,6 +29,8 @@ gem 'shoulda'
 
 gem 'devise'
 
+gem 'omniauth-facebook'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -44,6 +46,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
+  gem 'dotenv-rails'
 end
 
 group :test do
