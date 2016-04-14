@@ -7,4 +7,12 @@ module RestaurantHelpers
     fill_in 'Password confirmation', with: 'testtest'
     click_button 'Sign up'
   end
+
+  def add_restaurant
+    sign_up
+    visit '/restaurants'
+    click_link 'Add a restaurant'
+    fill_in 'Name', with: 'kf'
+    click_button 'Create Restaurant'
+  end
 end

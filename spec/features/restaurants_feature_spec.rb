@@ -81,7 +81,7 @@ require 'rails_helper'
       end
     end
 
-    context 'user cannot add a restaurant if not signed in' do
+    context 'user signed in' do
       scenario 'does not have add restaurant link on index page' do
         visit '/restaurants'
         click_link 'Add a restaurant'
