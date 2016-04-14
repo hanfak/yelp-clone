@@ -93,4 +93,24 @@ require 'rails_helper'
         expect(page).to have_content 'Log in'
       end
     end
+
+  context 'changing restaurant data with different user' do
+    before do
+      add_restaurant
+      click_link('Sign out')
+      sign_up_again
+    end
+
+    scenario 'a user should not be able to edit a restaurant created by another user' do
+      click_link 'Edit KFC'
+      fill_in 'Name', with: 'Kentucky Fried Chicken'
+      click_button 'Update Restaurant'
+      expect(page).not_to have_content 'Kentucky Fried Chicken'
+    end
+
+    # scenario 'a user should not be able to delete a restaurant created by another user' do
+    #   click_link 'Delete KFC'
+    #   expect(page).to have_content 'KFC'
+    # end
+  end
 end
