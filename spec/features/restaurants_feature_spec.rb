@@ -1,7 +1,8 @@
 require 'rails_helper'
 
   feature 'restaurants' do
-  include RestaurantHelpers
+    include RestaurantHelpers
+
     context 'no restaurants have been added' do
       scenario 'should display a prompt to add a restaurant' do
         sign_up
@@ -33,6 +34,7 @@ require 'rails_helper'
 
     context 'viewing restaurants' do
       let!(:kfc) { Restaurant.create(name: 'KFC') }
+
       scenario 'lets a user view a restaurant' do
         visit '/restaurants'
         click_link 'KFC'
@@ -42,9 +44,9 @@ require 'rails_helper'
     end
 
     context 'editing restaurants' do
-      before { Restaurant.create name: 'KFC' }
+      before {  add_restaurant}
+
       scenario 'let a user edit a restaurant' do
-        sign_up
         visit '/restaurants'
         click_link 'Edit KFC'
         fill_in 'Name', with: 'Kentucky Fried Chicken'
@@ -52,19 +54,21 @@ require 'rails_helper'
         expect(page).to have_content 'Kentucky Fried Chicken'
         expect(current_path).to eq '/restaurants'
       end
+
       scenario 'does not allow a user to edit restaurants others have created' do
-         add_restaurant
          click_link 'Sign out'
          sign_up_again
          visit '/restaurants'
-         expect(page).not_to have_link 'Edit KFC'
-        #  click_link 'Edit KFC'
+         click_link 'Edit KFC'
+         expect(current_path).to eq restaurants_path
+         expect(page).to have_content 'You cannot edit this restaurant'
         #  expect(page).to have_content 'Log in'
        end
     end
 
     context 'deleting restaurants' do
       before { Restaurant.create name: 'KFC' }
+
       scenario 'remotes a restaurant when a user clicks a delete link' do
         sign_up
         visit '/restaurants'
