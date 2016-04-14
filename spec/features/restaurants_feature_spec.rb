@@ -13,12 +13,9 @@ require 'rails_helper'
     end
 
     context 'restaurants have been added' do
-      before do
-        Restaurant.create(name: 'KFC')
-      end
+      before { add_restaurant }
 
       scenario 'display restaurants' do
-        visit '/restaurants'
         expect(page).to have_content 'KFC'
         expect(page).not_to have_content 'No restaurants yet'
       end
@@ -62,19 +59,24 @@ require 'rails_helper'
          click_link 'Edit KFC'
          expect(current_path).to eq restaurants_path
          expect(page).to have_content 'You cannot edit this restaurant'
-        #  expect(page).to have_content 'Log in'
        end
     end
 
     context 'deleting restaurants' do
-      before { Restaurant.create name: 'KFC' }
+      before { add_restaurant }
 
-      scenario 'remotes a restaurant when a user clicks a delete link' do
-        sign_up
-        visit '/restaurants'
+      scenario 'can delete if not the user who created' do
         click_link 'Delete KFC'
         expect(page).not_to have_content 'KFC'
         expect(page).to have_content 'Restaurant deleted successfully'
+      end
+
+      scenario 'cannot delete if not the user who created' do
+        click_link 'Sign out'
+        sign_up_again
+        click_link 'Delete KFC'
+        expect(current_path).to eq restaurants_path
+        expect(page).to have_content 'You cannot delete this restaurant'
       end
     end
 

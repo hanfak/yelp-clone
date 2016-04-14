@@ -23,10 +23,6 @@ class RestaurantsController < ApplicationController
     @restaurant = Restaurant.find(params[:id])
   end
 
-  # def edit
-  #   @restaurant = Restaurant.find(params[:id])
-  # end
-
   def edit
     @restaurant = Restaurant.find(params[:id])
     @user = current_user
@@ -48,8 +44,14 @@ class RestaurantsController < ApplicationController
 
   def destroy
     @restaurant = Restaurant.find(params[:id])
+    @user = current_user
+    if @user.id != @restaurant.user_id
+      flash[:notice] = 'You cannot delete this restaurant'
+      return redirect_to restaurants_path
+    end
     @restaurant.destroy
     flash[:notice] = 'Restaurant deleted successfully'
-    redirect_to '/restaurants'
+    redirect_to restaurants_path
   end
+
 end
