@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.3.0"
+ruby "2.2.3"
 
 gem 'certified'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

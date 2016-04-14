@@ -46,9 +46,12 @@ require 'rails_helper'
     end
 
     context 'editing restaurants' do
-      before { Restaurant.create name: 'KFC' }
+      before do
+      user = User.create(email: 'sachin@sachin.com', password: 'sachinkaria', password_confirmation: 'sachinkaria')
+      user.restaurants.create(name: 'KFC')
+      end
       scenario 'let a user edit a restaurant' do
-        sign_up
+        sign_in
         visit '/restaurants'
         click_link 'Edit KFC'
         fill_in 'Name', with: 'Kentucky Fried Chicken'
@@ -56,12 +59,27 @@ require 'rails_helper'
         expect(page).to have_content 'Kentucky Fried Chicken'
         expect(current_path).to eq '/restaurants'
       end
+
+      scenario 'cannot edit restaurant if not users' do
+        sign_up
+        visit '/restaurants'
+        expect(page).not_to have_link 'Edit KFC'
+      end
+
+      # scenario 'cannot edit restaurant if not users' do
+      #   sign_up_again
+      #   visit "/restaurants/#{Restaurant.id}/edit"
+      #   expect(current_path).to eq '/restaurants'
+      # end
     end
 
     context 'deleting restaurants' do
-      before { Restaurant.create name: 'KFC' }
+      before do
+      User.create(email: 'sachin@sachin.com', password: 'sachinkaria', password_confirmation: 'sachinkaria')
+      User.restaurants.create(name: 'KFC')
+      end
       scenario 'remotes a restaurant when a user clicks a delete link' do
-        sign_up
+        sign_in
         visit '/restaurants'
         click_link 'Delete KFC'
         expect(page).not_to have_content 'KFC'
@@ -81,7 +99,7 @@ require 'rails_helper'
       end
     end
 
-    context 'user cannot add a restaurant if not signed in' do
+    context 'user not signed in' do
       scenario 'does not have add restaurant link on index page' do
         visit '/restaurants'
         click_link 'Add a restaurant'
@@ -92,5 +110,6 @@ require 'rails_helper'
         visit '/restaurants/new'
         expect(page).to have_content 'Log in'
       end
+
     end
 end
