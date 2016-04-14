@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Restaurant, type: :model do
   it { is_expected.to have_many :reviews }
+  it { is_expected.to belong_to :user}
 
   it 'deletes reviews associated with it when deleted' do
     rest = Restaurant.create name: 'KFC'

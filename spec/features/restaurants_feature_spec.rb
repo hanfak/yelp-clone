@@ -25,11 +25,7 @@ require 'rails_helper'
 
     context 'creating restaurants' do
       scenario 'prompt user to fill out a form; display the new restaurant' do
-        sign_up
-        visit '/restaurants'
-        click_link 'Add a restaurant'
-        fill_in 'Name', with: 'KFC'
-        click_button 'Create Restaurant'
+        add_restaurant
         expect(page).to have_content 'KFC'
         expect(current_path).to eq '/restaurants'
       end
@@ -56,6 +52,15 @@ require 'rails_helper'
         expect(page).to have_content 'Kentucky Fried Chicken'
         expect(current_path).to eq '/restaurants'
       end
+      scenario 'does not allow a user to edit restaurants others have created' do
+         add_restaurant
+         click_link 'Sign out'
+         sign_up_again
+         visit '/restaurants'
+         expect(page).not_to have_link 'Edit KFC'
+        #  click_link 'Edit KFC'
+        #  expect(page).to have_content 'Log in'
+       end
     end
 
     context 'deleting restaurants' do
