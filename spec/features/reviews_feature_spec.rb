@@ -27,6 +27,17 @@ feature 'reviewing' do
       expect(current_path).to eq restaurants_path
       expect(page).to have_content 'You have already reviewed this restaurant'
     end
+
+    scenario 'user can delete a review' do
+      add_restaurant
+      click_link 'Review KFC'
+      fill_in 'Thoughts', with: 'so so'
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      click_link 'Delete review'
+      expect(page).not_to have_content 'so so'
+      expect(current_path).to eq restaurants_path
+    end
   end
 
   context 'Not logged in' do
