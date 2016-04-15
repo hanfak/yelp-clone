@@ -16,6 +16,17 @@ feature 'reviewing' do
       expect(current_path).to eq '/restaurants'
       expect(page).to have_content 'so so'
     end
+
+    scenario 'a user can leave a only one review on restaurant' do
+      add_restaurant
+      click_link 'Review KFC'
+      fill_in 'Thoughts', with: 'so so'
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      click_link 'Review KFC'
+      expect(current_path).to eq restaurants_path
+      expect(page).to have_content 'You have already reviewed this restaurant'
+    end
   end
 
   context 'Not logged in' do

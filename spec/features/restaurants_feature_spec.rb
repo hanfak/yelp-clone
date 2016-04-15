@@ -92,8 +92,8 @@ require 'rails_helper'
       end
     end
 
-    context 'user signed in' do
-      scenario 'does not have add restaurant link on index page' do
+    context 'user not signed in' do
+      scenario 'cannot add restaurant ' do
         visit '/restaurants'
         click_link 'Add a restaurant'
         expect(page).to have_content 'Log in'
