@@ -1,8 +1,8 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!
-# to store the user id in the reviews.user_id
+
   def new
-    @restaurant = Restaurant.find params[:restaurant_id]
+    @restaurant = Restaurant.find(params[:restaurant_id])
     @review = Review.new
     if current_user.has_reviewed? @restaurant
       flash[:notice] = 'You have already reviewed this restaurant'
@@ -18,14 +18,17 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    # binding.pry
-    @review = Review.find(params[:id])
+    @restaurant = Restaurant.find(params[:restaurant_id])
+    @review = @restaurant.reviews.find(params[:id])
+    unless  current_user.has_reviewed? @restaurant
+      flash[:notice] = 'You cannot delete this review'
+      return redirect_to restaurants_path
+    end
     @review.destroy
     redirect_to restaurants_path
   end
 
   def review_params
     params.require(:review).permit(:thoughts, :rating)
-
   end
 end
