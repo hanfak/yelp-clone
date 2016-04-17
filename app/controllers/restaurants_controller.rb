@@ -36,10 +36,6 @@ class RestaurantsController < ApplicationController
     redirect_to '/restaurants'
   end
 
-  def restaurant_params
-    params.require(:restaurant).permit(:name)
-  end
-
   def destroy
     @restaurant = Restaurant.find(params[:id])
     if current_user.id != @restaurant.user_id
@@ -51,4 +47,7 @@ class RestaurantsController < ApplicationController
     redirect_to restaurants_path
   end
 
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :image)
+  end
 end
