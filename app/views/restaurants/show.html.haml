@@ -1,2 +1,17 @@
 %p= @restaurant.name
 %p= @restaurant.description
+
+%h5
+  Reviews for
+  - if @restaurant.reviews.any?
+    %ul
+      - @restaurant.reviews.each do |review|
+        %li
+          = review.thoughts
+          %strong= review.rating
+          \/5
+          = link_to "Delete review", restaurant_review_path(@restaurant,review), method: :delete
+  - else
+  %p No reviews
+
+= link_to "Return to restaurants", restaurants_path
