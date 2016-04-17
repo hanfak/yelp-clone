@@ -3,8 +3,6 @@ require 'rails_helper'
 feature 'reviewing' do
   include RestaurantHelpers
 
-  # before { Restaurant.create name: 'KFC' }
-
   context 'logged in' do
     scenario 'allows user to leave a review using a form' do
       add_restaurant
